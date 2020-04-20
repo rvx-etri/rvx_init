@@ -1,0 +1,20 @@
+ALL_GIT_LIST = rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+INSTALLED_GIT_LIST = $(shell find ./ -maxdepth 1 -type d -name "rvx_*")
+
+$(addsuffix .install, ${ALL_GIT_LIST}):%.install:
+ifdef BB_USERNAME
+	git clone https://${BB_USERNAME}@bitbucket.org/kyuseung_han/$(*).git
+else
+	@echo "make set_bbname first!"
+endif
+
+${ALL_GIT_LIST}:%: %.install
+
+$(addsuffix .update, ${INSTALLED_GIT_LIST}):%.update:
+	if [ -d ./$(*)/.git ] ;	\
+	then \
+		cd ./$(*); \
+		git pull origin master; \
+	fi
+
+update_git: $(addsuffix .update, ${INSTALLED_GIT_LIST})
