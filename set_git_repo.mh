@@ -1,0 +1,19 @@
+BB_USERNAME_FILENAME=bitbucket_username.mh
+
+-include ${RVX_INIT_HOME}/${BB_USERNAME_FILENAME}
+
+set_repo: set_repo_http
+
+set_repo_http:
+ifdef BB_USERNAME
+	git remote set-url origin https://${BB_USERNAME}@bitbucket.org/kyuseung_han/${BBGIT_NAME}.git
+	git remote set-url --push origin https://${BB_USERNAME}@bitbucket.org/kyuseung_han/${BBGIT_NAME}.git
+else
+	@echo "make set_bbname first!"
+endif
+
+set_repo_ssh:
+	git remote set-url origin git@bitbucket.org:kyuseung_han/${BBGIT_NAME}.git
+	git remote set-url --push origin git@bitbucket.org:kyuseung_han/${BBGIT_NAME}.git
+
+.PHONY: set_bbname set_repo_http set_repo_ssh
