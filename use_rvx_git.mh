@@ -1,0 +1,29 @@
+ifndef RVX_INIT_HOME
+RVX_INIT_HOME=./rvx_init
+endif
+
+-include ${RVX_INIT_HOME}/set_git_repo.mh
+-include ${RVX_INIT_HOME}/manage_rvx_git.mh
+
+rvx_init:
+	if [ -d ./rvx_init ] ;	\
+	then \
+		rm -rf ./rvx_init; \
+	fi
+ifeq (${SSH_ACCESS},True)
+	git clone git@bitbucket.org:kyuseung_han/rvx_init.git
+else
+	git clone https://bitbucket.org/kyuseung_han/rvx_init.git
+endif
+
+set_bbname:
+ifdef NAME
+	cd ./rvx_init && make set_bbname NAME=${NAME} SSH_ACCESS=${SSH_ACCESS}
+else
+	@echo "NAME is not defined"
+endif
+
+update_use_rvx_git:
+	mv -f ${RVX_INIT_HOME}/use_rvx_git.mh ./use_rvx_git.mh
+
+.PHONY: rvx_init set_bbname update_use_rvx_git

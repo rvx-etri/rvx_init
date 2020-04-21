@@ -21,4 +21,13 @@ $(addsuffix .update, ${INSTALLED_GIT_LIST}):%.update:
 		git pull origin master; \
 	fi
 
-update_git: $(addsuffix .update, ${INSTALLED_GIT_LIST})
+update_rvx_git: $(addsuffix .update, ${INSTALLED_GIT_LIST})
+
+$(addsuffix .set_repo, ${INSTALLED_GIT_LIST}):%.update:
+	if [ -d ./$(*)/.git ] ;	\
+	then \
+		cd ./$(*); \
+		make set_repo; \
+	fi
+
+set_repo_rvx_git: $(addsuffix .set_repo, ${INSTALLED_GIT_LIST})
