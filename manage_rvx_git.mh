@@ -3,7 +3,11 @@ INSTALLED_GIT_LIST = $(shell find ./ -maxdepth 1 -type d -name "rvx_*")
 
 $(addsuffix .install, ${ALL_GIT_LIST}):%.install:
 ifdef BB_USERNAME
+ifeq (${SSH_ACCESS},True)
+	git clone git@bitbucket.org:kyuseung_han/$(*).git
+else
 	git clone https://${BB_USERNAME}@bitbucket.org/kyuseung_han/$(*).git
+endif	
 else
 	@echo "make set_bbname first!"
 endif
