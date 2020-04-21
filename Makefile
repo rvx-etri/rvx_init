@@ -17,6 +17,7 @@
 # ****************************************************************************
 
 BBGIT_NAME=rvx_init
+RVX_INIT_HOME=${PWD}
 include ./set_git_repo.mh
 
 PYTHON3_VERSION=3.6.0
@@ -54,7 +55,7 @@ git_config_kshan: git_config
 
 set_bbname:
 ifdef NAME
-	echo "BB_USERNAME=${NAME}" > ./${BB_USERNAME_FILENAME}
+	echo -e "BB_USERNAME=${NAME}\nSSH_ACCESS=${SSH_ACCESS}" > ./${BB_USERNAME_FILENAME}
 else
 	@echo "NAME is not defined"
 endif

@@ -2,7 +2,16 @@ BB_USERNAME_FILENAME=bitbucket_username.mh
 
 -include ${RVX_INIT_HOME}/${BB_USERNAME_FILENAME}
 
-set_repo: set_repo_http
+ifndef SSH_ACCESS
+SSH_ACCESS=False
+endif
+
+set_repo:
+ifeq (${SSH_ACCESS},True)
+	make set_repo_ssh
+else
+	make set_repo_http
+endif
 
 set_repo_http:
 ifdef BB_USERNAME
