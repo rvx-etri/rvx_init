@@ -1,4 +1,4 @@
-ALL_GIT_LIST = rvx_init rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+ALL_GIT_LIST = rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
 INSTALLED_GIT_LIST = $(shell find ./ -maxdepth 1 -type d -name "rvx_*")
 
 $(addsuffix .install, ${ALL_GIT_LIST}):%.install:
@@ -23,7 +23,7 @@ $(addsuffix .update, ${INSTALLED_GIT_LIST}):%.update:
 
 update_rvx_git: $(addsuffix .update, ${INSTALLED_GIT_LIST})
 
-$(addsuffix .set_repo, ${INSTALLED_GIT_LIST}):%.update:
+$(addsuffix .set_repo, ${INSTALLED_GIT_LIST}):%.set_repo:
 	if [ -d ./$(*)/.git ] ;	\
 	then \
 		cd ./$(*); \
