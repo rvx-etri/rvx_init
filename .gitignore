@@ -1,4 +1,3 @@
 *~
 *.swp
-source
-bitbucket_username.mh
+bitbucket_*mh

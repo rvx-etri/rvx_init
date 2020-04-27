@@ -1,0 +1,44 @@
+PYTHON3_VERSION=3.6.0
+PIP3=${shell which pip3}
+
+ifndef CMD
+CMD = gui
+endif
+
+RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+
+python_centos:
+	sudo yum install python2
+	sudo yum install zlib zlib-devel openssl openssl-devel
+	wget https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tar.xz
+	tar xvf Python-${PYTHON3_VERSION}.tar.xz
+	cd ./Python-${PYTHON3_VERSION}; ./configure; make; sudo make install
+
+python_ubuntu:
+	sudo apt-get install python2
+	sudo apt-get install python3
+	sudo apt-get install python3-pip
+	sudo apt-get upgrade python3
+	sudo apt-get upgrade python3-pip
+
+pip3:
+	sudo ${PIP3} install --upgrade pip
+	sudo ${PIP3} install cryptography paramiko pyelftools
+	sudo ${PIP3} install --upgrade cryptography paramiko pyelftools
+
+rvx_git_install:
+	git clone https://bitbucket.org/kyuseung_han/rvx_git_install.git
+
+rvx_git:
+	@python3 ./rvx_git_install/rvx_git_install.py -cwd ${PWD} -cmd ${CMD}
+
+bitbucket:
+	@make rvx_git CMD=bitbucket
+
+$(addsuffix .install, ${RVX_GIT_LIST}):%.install:
+	@make rvx_git CMD=$(*).install
+
+${RVX_GIT_LIST}:%: %.install
+
+update_mh:
+	cp ./rvx_git_install/use_rvx_git_install.mh ./use_rvx_git_install.mh
