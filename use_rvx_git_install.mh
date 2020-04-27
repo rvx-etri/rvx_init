@@ -5,7 +5,7 @@ ifndef CMD
 CMD = gui
 endif
 
-RVX_GIT_LIST=rvx_git_install rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
 
 python_centos:
 	sudo yum install python2
