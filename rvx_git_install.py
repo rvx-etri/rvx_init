@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 import re
 
-git_list = frozenset(('rvx_util','rvx_dev_util','rvx_tools','rvx_ssw','rvx_synthesizer_binary','rvx_hwlib','rvx_binary'))
+git_list = frozenset(('rvx_git_install', 'rvx_util','rvx_dev_util','rvx_tools','rvx_ssw','rvx_synthesizer_binary','rvx_hwlib','rvx_binary'))
 
 class BitbucketInfo():
 	def __init__(self, cwd:Path):
@@ -88,8 +88,8 @@ class GitRepo():
 	def set_repo(self):
 		if self.path.is_dir():
 			git_addr = self.get_remote_addr()
-			subprocess.run(args=[f'git remote set-url origin {git_addr}'], shell=True, cwd=git_dir)
-			subprocess.run(args=[f'git remote set-url --push origin {git_addr}'], shell=True, cwd=git_dir)
+			subprocess.run(args=[f'git remote set-url origin {git_addr}'], shell=True, cwd=self.path)
+			subprocess.run(args=[f'git remote set-url --push origin {git_addr}'], shell=True, cwd=self.path)
 
 if __name__ == '__main__':
 	# argument
