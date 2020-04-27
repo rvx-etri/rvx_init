@@ -60,7 +60,7 @@ class GitRepo():
 		self.path = path.resolve()
 		if self.path.is_dir():
 			contents = subprocess.check_output('git remote -v', shell=True, cwd=self.path).decode()
-			self.git_name = re.compile(r'\brvx_[a-zA-Z0-9_]+\.git\b').findall(contents)[0]
+			self.git_name = re.compile(r'(\brvx_[a-zA-Z0-9_]+).git\b').findall(contents)[0]
 		else:
 			self.git_name = None
 	
