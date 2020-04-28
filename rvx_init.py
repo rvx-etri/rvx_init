@@ -131,17 +131,22 @@ if __name__ == '__main__':
 				action = cmd_config[1]
 			else:
 				action = None
+
 			if target=='exit':
 				is_gui_mode = False
 				break
+
 			elif target=='git_config':
 				subprocess.run(args=['git config --global credential.helper \'cache --timeout=864000\''], shell=True, cwd=cwd)
+
 			elif target=='git_kshan':
 				subprocess.run(args=['git config --global core.editor vim'], shell=True, cwd=cwd)
 				subprocess.run(args=['git config --global user.name \"Kyuseung Han\"'], shell=True, cwd=cwd)
 				subprocess.run(args=['git config --global user.email han@etir.re.kr'], shell=True, cwd=cwd)
+
 			elif target=='bitbucket' or target=='bb':
 				bitbucket_info.generate()
+
 			elif target in git_list:
 				if bitbucket_info.is_wrong_info:
 					print('wrong bitbucket info!')
@@ -154,6 +159,7 @@ if __name__ == '__main__':
 				elif action=='set_repo':
 					git_repo = GitRepo(bitbucket_info,cwd/target)
 					git_repo.set_repo()
+
 			elif target=='update':
 				if bitbucket_info.is_wrong_info:
 					print('wrong bitbucket info!')
@@ -161,7 +167,14 @@ if __name__ == '__main__':
 					for git_dir in cwd.glob('rvx_*'):
 						if git_dir.is_dir() and git_dir.name in git_list:
 							GitRepo(bitbucket_info,git_dir).update()
+
 			elif target=='set_repo':
+				if bitbucket_info.is_wrong_info:
+					print('wrong bitbucket info!')
+				else:
+					GitRepo(bitbucket_info,cwd).set_repo()
+
+			elif target=='set_repo_sub':
 				if bitbucket_info.is_wrong_info:
 					print('wrong bitbucket info!')
 				else:
