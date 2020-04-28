@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 import re
 
-git_list = frozenset(('rvx_git_install', 'rvx_util','rvx_dev_util','rvx_tools','rvx_ssw','rvx_synthesizer_binary','rvx_hwlib','rvx_binary'))
+git_list = frozenset(('rvx_init', 'rvx_util','rvx_dev_util','rvx_tools','rvx_ssw','rvx_synthesizer_binary','rvx_hwlib','rvx_binary'))
 
 class BitbucketInfo():
 	def __init__(self, cwd:Path):
@@ -93,7 +93,7 @@ class GitRepo():
 
 if __name__ == '__main__':
 	# argument
-	parser = argparse.ArgumentParser(description='RVX git install')
+	parser = argparse.ArgumentParser(description='RVX init')
 	parser.add_argument('-cmd', '-c', nargs='+', help='command')
 	parser.add_argument('-cwd', help='cwd')
 	args = parser.parse_args()

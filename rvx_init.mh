@@ -26,19 +26,24 @@ pip3:
 	sudo ${PIP3} install cryptography paramiko pyelftools
 	sudo ${PIP3} install --upgrade cryptography paramiko pyelftools
 
-rvx_git_install:
-	git clone https://bitbucket.org/kyuseung_han/rvx_git_install.git
+rvx_init_git:
+	@if ! [ -d ./rvx_init ] ;	\
+	then \
+		git clone https://bitbucket.org/kyuseung_han/rvx_init.git ; \
+	fi
 
-rvx_git:
-	@python3 ./rvx_git_install/rvx_git_install.py -cwd ${PWD} -cmd ${CMD}
+rvx_init:
+	@python3 ./rvx_init/rvx_init.py -cwd ${PWD} -cmd ${CMD}
 
 bitbucket:
-	@make rvx_git CMD=bitbucket
+	@make rvx_init CMD=bitbucket
 
 $(addsuffix .install, ${RVX_GIT_LIST}):%.install:
-	@make rvx_git CMD=$(*).install
+	@make rvx_init CMD=$(*).install
 
 ${RVX_GIT_LIST}:%: %.install
 
 update_mh:
-	cp ./rvx_git_install/use_rvx_git_install.mh ./use_rvx_git_install.mh
+	cp ./rvx_init/rvx_init.mh ./rvx_init.mh
+
+.PHONY: rvx_init_git rvx_init bitbucket update_mh
