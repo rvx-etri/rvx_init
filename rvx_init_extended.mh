@@ -1,0 +1,19 @@
+ifndef CMD
+CMD = gui
+endif
+
+RVX_INIT_CMD_LIST=bitbucket set_repo set_repo_sub change_repo
+RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+
+rvx_init:
+	@python3 ${RVX_INIT_HOME}/rvx_init.py -cwd ${PWD} -cmd ${CMD}
+
+${RVX_INIT_CMD_LIST}:
+	@make rvx_init CMD=$@
+
+$(addsuffix .install, ${RVX_GIT_LIST}):%.install:
+	@make rvx_init CMD=$(*).install
+
+${RVX_GIT_LIST}:%: %.install
+
+.PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} ${RVX_GIT_LIST}

@@ -5,13 +5,6 @@ ifndef RVX_INIT_HOME
 RVX_INIT_HOME=./rvx_init
 endif
 
-ifndef CMD
-CMD = gui
-endif
-
-RVX_INIT_CMD_LIST=bitbucket set_repo set_repo_sub
-RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
-
 python_centos:
 	sudo yum install python2
 	sudo yum install zlib zlib-devel openssl openssl-devel
@@ -37,18 +30,7 @@ rvx_init_git:
 		git clone https://bitbucket.org/kyuseung_han/rvx_init.git ; \
 	fi
 
-rvx_init:
-	@python3 ${RVX_INIT_HOME}/rvx_init.py -cwd ${PWD} -cmd ${CMD}
-
-${RVX_INIT_CMD_LIST}:
-	@make rvx_init CMD=$@
-
-$(addsuffix .install, ${RVX_GIT_LIST}):%.install:
-	@make rvx_init CMD=$(*).install
-
-${RVX_GIT_LIST}:%: %.install
-
 update_rvx_init:
 	-cp ${RVX_INIT_HOME}/rvx_init.mh ./rvx_init.mh
 
-.PHONY: rvx_init_git rvx_init bitbucket update_mh
+-include ${RVX_INIT_HOME}/rvx_init_extended.mh

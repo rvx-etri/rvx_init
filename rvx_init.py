@@ -90,6 +90,12 @@ class GitRepo():
 			git_addr = self.get_remote_addr()
 			subprocess.run(args=[f'git remote set-url origin {git_addr}'], shell=True, cwd=self.path)
 			subprocess.run(args=[f'git remote set-url --push origin {git_addr}'], shell=True, cwd=self.path)
+			subprocess.run(args=['git remote -v'], shell=True, cwd=self.path)
+	
+	def change_repo(self):
+		if self.path.is_dir():
+			self.git_name = input('changed git name: ')
+			self.set_repo()
 
 if __name__ == '__main__':
 	# argument
@@ -159,6 +165,15 @@ if __name__ == '__main__':
 				elif action=='set_repo':
 					git_repo = GitRepo(bitbucket_info,cwd/target)
 					git_repo.set_repo()
+				elif action=='reinstall':
+					pass
+					'''
+					@echo "git clone "$(shell git config --get remote.origin.url) > reinstall
+					@chmod +x reinstall
+					@mv reinstall ../
+					'''
+				else:
+					assert 0, cmd
 
 			elif target=='update':
 				if bitbucket_info.is_wrong_info:
@@ -181,6 +196,13 @@ if __name__ == '__main__':
 					for git_dir in cwd.glob('rvx_*'):
 						if git_dir.is_dir() and git_dir.name in git_list:
 							GitRepo(bitbucket_info,git_dir).set_repo()
+
+			elif target=='change_repo':
+				if bitbucket_info.is_wrong_info:
+					print('wrong bitbucket info!')
+				else:
+					GitRepo(bitbucket_info,cwd).change_repo()
+
 			else:
 				print(f'wrong target: {target}')
 		#
