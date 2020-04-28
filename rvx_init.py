@@ -135,9 +135,9 @@ if __name__ == '__main__':
 				is_gui_mode = False
 				break
 			elif target=='git_config':
-				subprocess.run(args=['git config --global core.editor vim'], shell=True, cwd=cwd)
 				subprocess.run(args=['git config --global credential.helper \'cache --timeout=864000\''], shell=True, cwd=cwd)
 			elif target=='git_kshan':
+				subprocess.run(args=['git config --global core.editor vim'], shell=True, cwd=cwd)
 				subprocess.run(args=['git config --global user.name \"Kyuseung Han\"'], shell=True, cwd=cwd)
 				subprocess.run(args=['git config --global user.email han@etir.re.kr'], shell=True, cwd=cwd)
 			elif target=='bitbucket' or target=='bb':
