@@ -180,7 +180,7 @@ if __name__ == '__main__':
 					print('wrong bitbucket info!')
 				else:
 					for git_dir in cwd.glob('rvx_*'):
-						if git_dir.is_dir() and git_dir.name in git_list:
+						if git_dir.is_dir():
 							GitRepo(bitbucket_info,git_dir).update()
 
 			elif target=='set_repo':
@@ -194,7 +194,7 @@ if __name__ == '__main__':
 					print('wrong bitbucket info!')
 				else:
 					for git_dir in cwd.glob('rvx_*'):
-						if git_dir.is_dir() and git_dir.name in git_list:
+						if git_dir.is_dir():
 							GitRepo(bitbucket_info,git_dir).set_repo()
 
 			elif target=='change_repo':

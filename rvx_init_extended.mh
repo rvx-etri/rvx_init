@@ -16,4 +16,7 @@ $(addsuffix .install, ${RVX_GIT_LIST}):%.install:
 
 ${RVX_GIT_LIST}:%: %.install
 
+update_git:
+	@make rvx_init CMD=update
+
 .PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} ${RVX_GIT_LIST}
