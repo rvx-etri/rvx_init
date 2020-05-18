@@ -31,6 +31,9 @@ rvx_init_git:
 	fi
 
 update_rvx_init:
-	-cp ${RVX_INIT_HOME}/rvx_init.mh ./rvx_init.mh
+	@if [ -f ${RVX_INIT_HOME}/rvx_init.mh ] ;	\
+	then \
+		cp ${RVX_INIT_HOME}/rvx_init.mh ./rvx_init.mh ; \
+	fi
 
 -include ${RVX_INIT_HOME}/rvx_init_extended.mh

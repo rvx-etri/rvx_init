@@ -100,16 +100,16 @@ class GitRepo():
 if __name__ == '__main__':
 	# argument
 	parser = argparse.ArgumentParser(description='RVX init')
-	parser.add_argument('-cmd', '-c', nargs='+', help='command')
+	parser.add_argument('-cmd', '-c', help='command')
 	parser.add_argument('-cwd', help='cwd')
 	args = parser.parse_args()
 
 	is_gui_mode = False
 	if not args.cmd:
 		is_gui_mode = True
-	elif args.cmd[0]=='gui':
+	elif args.cmd=='gui':
 		is_gui_mode = True
-	cmd_list = args.cmd
+	cmd_list = [args.cmd]
 
 	if not args.cwd:
 		cwd = Path('.')
