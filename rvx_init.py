@@ -77,20 +77,20 @@ class GitRepo():
 		elif not self.path.is_dir():
 			self.git_name = git_name
 			git_addr = self.get_remote_addr()
-			subprocess.run(args=[f'git clone {git_addr}'], shell=True, cwd=self.path.parent)
+			subprocess.run(args=f'git clone {git_addr}'.split(' '), shell=True, cwd=self.path.parent)
 			if self.path.name!=self.git_name:
-				subprocess.run(args=[f'mv {self.path.name} {self.git_name}'], shell=True, cwd=self.path.parent)
+				subprocess.run(args=f'mv {self.path.name} {self.git_name}'.split(' '), shell=True, cwd=self.path.parent)
 
 	def update(self):
 		if self.path.is_dir():
-			subprocess.run(args=['git pull origin master'], shell=True, cwd=self.path)
+			subprocess.run(args='git pull origin master'.split(' '), shell=True, cwd=self.path)
 			
 	def set_repo(self):
 		if self.path.is_dir():
 			git_addr = self.get_remote_addr()
-			subprocess.run(args=[f'git remote set-url origin {git_addr}'], shell=True, cwd=self.path)
-			subprocess.run(args=[f'git remote set-url --push origin {git_addr}'], shell=True, cwd=self.path)
-			subprocess.run(args=['git remote -v'], shell=True, cwd=self.path)
+			subprocess.run(args=f'git remote set-url origin {git_addr}'.split(' '), shell=True, cwd=self.path)
+			subprocess.run(args=f'git remote set-url --push origin {git_addr}'.split(' '), shell=True, cwd=self.path)
+			subprocess.run(args='git remote -v'.split(' '), shell=True, cwd=self.path)
 	
 	def change_repo(self):
 		if self.path.is_dir():
@@ -100,16 +100,16 @@ class GitRepo():
 if __name__ == '__main__':
 	# argument
 	parser = argparse.ArgumentParser(description='RVX init')
-	parser.add_argument('-cmd', '-c', help='command')
+	parser.add_argument('-cmd', '-c', nargs='+', help='command')
 	parser.add_argument('-cwd', help='cwd')
 	args = parser.parse_args()
 
 	is_gui_mode = False
 	if not args.cmd:
 		is_gui_mode = True
-	elif args.cmd=='gui':
+	elif args.cmd[0]=='gui':
 		is_gui_mode = True
-	cmd_list = [args.cmd]
+	cmd_list = args.cmd
 
 	if not args.cwd:
 		cwd = Path('.')
@@ -143,12 +143,12 @@ if __name__ == '__main__':
 				break
 
 			elif target=='git_config':
-				subprocess.run(args=['git config --global credential.helper \'cache --timeout=864000\''], shell=True, cwd=cwd)
+				subprocess.run(args='git config --global credential.helper \'cache --timeout=864000\''.split(' '), shell=True, cwd=cwd)
 
 			elif target=='git_kshan':
-				subprocess.run(args=['git config --global core.editor vim'], shell=True, cwd=cwd)
-				subprocess.run(args=['git config --global user.name \"Kyuseung Han\"'], shell=True, cwd=cwd)
-				subprocess.run(args=['git config --global user.email han@etir.re.kr'], shell=True, cwd=cwd)
+				subprocess.run(args='git config --global core.editor vim'.split(' '), shell=True, cwd=cwd)
+				subprocess.run(args='git config --global user.name \"Kyuseung Han\"'.split(' '), shell=True, cwd=cwd)
+				subprocess.run(args='git config --global user.email han@etir.re.kr'.split(' '), shell=True, cwd=cwd)
 
 			elif target=='bitbucket' or target=='bb':
 				bitbucket_info.generate()
