@@ -7,6 +7,7 @@ import re
 
 is_linux = (platform.system()=='Linux')
 is_windows = not is_linux
+python_cmd = 'python3' if is_linux else 'python'
 
 git_list = frozenset(('rvx_init', 'rvx_util','rvx_dev_util','rvx_tools','rvx_ssw','rvx_synthesizer_binary','rvx_hwlib','rvx_binary'))
 
@@ -98,7 +99,9 @@ class GitRepo():
 
 	def update(self):
 		if self.path.is_dir():
-			execute_shell_cmd('git pull origin master', cwd=self.path)
+			git_info_dir = self.path / '.git'
+			if git_info_dir.is_dir():
+				execute_shell_cmd('git pull origin master', cwd=self.path)
 			
 	def set_repo(self):
 		if self.path.is_dir():
@@ -194,6 +197,7 @@ if __name__ == '__main__':
 				if bitbucket_info.is_wrong_info:
 					print('wrong bitbucket info!')
 				else:
+					GitRepo(bitbucket_info,cwd).update()
 					for git_dir in cwd.glob('rvx_*'):
 						if git_dir.is_dir():
 							GitRepo(bitbucket_info,git_dir).update()
@@ -219,11 +223,13 @@ if __name__ == '__main__':
 					GitRepo(bitbucket_info,cwd).change_repo()
 
 			elif target=='update_script':
+				rvx_init_dir = Path('.') / 'rvx_init'
 				if is_linux:
 					cmd_list = []
-					cmd_list.append('cd ./rvx_init && git pull origin master')
-					cmd_list.append('make set_repo set_repo_sub')
-					cmd_list.append('make git_update')
+					cmd_list.append(f'cd {rvx_init_dir} && git checkout . && git pull origin master')
+					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd set_repo')
+					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd set_repo_sub')
+					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd update')
 					update_script_file = cwd / 'update.sh'
 					update_script_file.write_text('\n'.join(cmd_list))
 					make_executable(update_script_file)
