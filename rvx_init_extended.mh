@@ -2,7 +2,7 @@ ifndef CMD
 CMD = gui
 endif
 
-RVX_INIT_CMD_LIST=bitbucket set_repo set_repo_sub change_repo
+RVX_INIT_CMD_LIST=bitbucket set_repo set_repo_sub change_repo update_script
 RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
 
 rvx_init:
