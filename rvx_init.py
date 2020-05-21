@@ -14,8 +14,8 @@ git_list = frozenset(('rvx_init', 'rvx_util','rvx_dev_util','rvx_tools','rvx_ssw
 def execute_shell_cmd(cmd:str, cwd:Path):
 	subprocess.run(args=[cmd], shell=True, cwd=cwd)
 
-def get_shell_output(cmd:str):
-	return subprocess.check_output(cmd, shell=True).decode()
+def get_shell_output(cmd:str, cwd:Path):
+	return subprocess.check_output(cmd, shell=True, cwd=cwd).decode()
 
 def make_executable(path:Path):
 	if path.is_file():
@@ -75,7 +75,7 @@ class GitRepo():
 		self.bitbucket_info = bitbucket_info
 		self.path = path.resolve()
 		if self.path.is_dir():
-			contents = get_shell_output('git remote -v')
+			contents = get_shell_output('git remote -v', self.path)
 			self.git_name = re.compile(r'(\brvx_[a-zA-Z0-9_]+).git\b').findall(contents)[0]
 		else:
 			self.git_name = None
