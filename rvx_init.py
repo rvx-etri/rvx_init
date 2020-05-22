@@ -74,14 +74,29 @@ class GitRepo():
 	def __init__(self, bitbucket_info:BitbucketInfo, path:Path):
 		self.bitbucket_info = bitbucket_info
 		self.path = path.resolve()
+		self.git_name = ''
+
 		if self.path.is_dir():
 			contents = get_shell_output('git remote -v', self.path)
-			self.git_name = re.compile(r'(\brvx_[a-zA-Z0-9_]+).git\b').findall(contents)[0]
+			candidate_list = re.compile(r'(\brvx_[a-zA-Z0-9_]+).git\b').findall(contents)
+			if candidate_list:
+				self.git_name = candidate_list[0]
+			if self.path.name!=self.git_name:
+				while 1:
+					print('Mismatch between directory name and remote repository!')
+					answer = input('Do you want to extract git name from directory name? (yes/no):')
+					if not answer:
+						break
+					elif answer=='no':
+						break
+					elif answer=='yes':
+						self.git_name = self.path.name
+						break					
 		else:
 			self.git_name = None
 	
-	def get_remote_addr(self):
-		if self.bitbucket_info.is_ssh_access:
+	def get_remote_addr(self, is_ssh_access:bool):
+		if is_ssh_access:
 			git_addr = f'git@bitbucket.org:kyuseung_han/{self.git_name}.git'
 		else:
 			git_addr = f'https://{self.bitbucket_info.username}@bitbucket.org/kyuseung_han/{self.git_name}.git'
@@ -92,7 +107,7 @@ class GitRepo():
 			print('wrong bitbucket info!')
 		elif not self.path.is_dir():
 			self.git_name = git_name
-			git_addr = self.get_remote_addr()
+			git_addr = self.get_remote_addr(self.bitbucket_info.is_ssh_access)
 			execute_shell_cmd(f'git clone {git_addr}', cwd=self.path.parent)
 			if self.path.name!=self.git_name:
 				execute_shell_cmd(f'mv {self.path.name} {self.git_name}', cwd=self.path.parent)
@@ -103,12 +118,21 @@ class GitRepo():
 			if git_info_dir.is_dir():
 				execute_shell_cmd('git pull origin master', cwd=self.path)
 			
-	def set_repo(self):
+	def __set_repo(self, is_ssh_access:bool):
 		if self.path.is_dir():
-			git_addr = self.get_remote_addr()
+			git_addr = self.get_remote_addr(is_ssh_access)
 			execute_shell_cmd(f'git remote set-url origin {git_addr}', cwd=self.path)
 			execute_shell_cmd(f'git remote set-url --push origin {git_addr}', cwd=self.path)
 			execute_shell_cmd('git remote -v', cwd=self.path)
+	
+	def set_repo(self):
+		git_addr = self.__set_repo(self.bitbucket_info.is_ssh_access)
+	
+	def set_repo_ssh(self):
+		git_addr = self.__set_repo(True)
+	
+	def set_repo_https(self):
+		git_addr = self.__set_repo(False)
 	
 	def change_repo(self):
 		if self.path.is_dir():
@@ -206,7 +230,16 @@ if __name__ == '__main__':
 				if bitbucket_info.is_wrong_info:
 					print('wrong bitbucket info!')
 				else:
-					GitRepo(bitbucket_info,cwd).set_repo()
+					if not action:
+						GitRepo(bitbucket_info,cwd).set_repo()
+					elif action=='auto':
+						GitRepo(bitbucket_info,cwd).set_repo()
+					elif action=='ssh':
+						GitRepo(bitbucket_info,cwd).set_repo_ssh()
+					elif action=='https':
+						GitRepo(bitbucket_info,cwd).set_repo_https()
+					else:
+						print(f'wrong action: {action}')
 
 			elif target=='set_repo_sub':
 				if bitbucket_info.is_wrong_info:
