@@ -259,10 +259,10 @@ if __name__ == '__main__':
 				rvx_init_dir = Path('.') / 'rvx_init'
 				if is_linux:
 					cmd_list = []
-					cmd_list.append(f'cd {rvx_init_dir} && git checkout . && git pull origin master')
-					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd set_repo')
-					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd set_repo_sub')
-					cmd_list.append(f'{python_cmd} {rvx_init_dir}/rvx_init.py -cmd update')
+					cmd_list.append(f'git checkout .')
+					cmd_list.append(f'git pull origin master')
+					cmd_list.append(f'git submodule init')
+					cmd_list.append(f'git submodule update')
 					update_script_file = cwd / 'update.sh'
 					update_script_file.write_text('\n'.join(cmd_list))
 					make_executable(update_script_file)
