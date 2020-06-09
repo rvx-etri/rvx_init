@@ -259,6 +259,7 @@ if __name__ == '__main__':
 				rvx_init_dir = Path('.') / 'rvx_init'
 				if is_linux:
 					cmd_list = []
+					cmd_list.append(f'make clean')
 					cmd_list.append(f'git checkout .')
 					cmd_list.append(f'git pull origin master')
 					cmd_list.append(f'git submodule init')
