@@ -187,6 +187,9 @@ if __name__ == '__main__':
 			elif target=='git_config':
 				execute_shell_cmd('git config --global credential.helper \'cache --timeout=864000\'', cwd=cwd)
 
+			elif target=='git_config_reset':
+				execute_shell_cmd('git config --unset credential.helper', cwd=cwd)
+
 			elif target=='git_kshan':
 				execute_shell_cmd('git config --global core.editor vim', cwd=cwd)
 				execute_shell_cmd('git config --global user.name \"Kyuseung Han\"', cwd=cwd)
