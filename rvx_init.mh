@@ -21,8 +21,8 @@ python_ubuntu:
 
 pip3:
 	sudo ${PIP3} install --upgrade pip
-	sudo ${PIP3} install distro numpy cryptography paramiko pyelftools
-	sudo ${PIP3} install --upgrade distro numpy cryptography paramiko pyelftools
+	sudo ${PIP3} install distutils distro numpy cryptography paramiko pyelftools
+	sudo ${PIP3} install --upgrade distutils distro numpy cryptography paramiko pyelftools
 
 rvx_init_git:
 	@if ! [ -d ./rvx_init ] ;	\
