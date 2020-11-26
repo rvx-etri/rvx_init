@@ -16,12 +16,14 @@ python_ubuntu:
 	#sudo apt-get install python2
 	sudo apt-get install python3
 	sudo apt-get install python3-pip
+	sudo apt-get install python3-tk
 	sudo apt-get upgrade python3
 	sudo apt-get upgrade python3-pip
+	sudo apt-get upgrade python3-tk
 
 pip3:
 	sudo ${PIP3} install --upgrade pip
-	sudo ${PIP3} install distro numpy cryptography paramiko pyelftools
+	sudo ${PIP3} install distro numpy cryptography paramiko pyelftools tkinter
 	sudo ${PIP3} install --upgrade distro numpy cryptography paramiko pyelftools
 
 rvx_init_git:
