@@ -6,7 +6,7 @@ RVX_INIT_CMD_LIST=bitbucket git_config set_repo set_repo_sub change_repo update_
 RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
 
 rvx_init:
-	@python3 ${RVX_INIT_HOME}/rvx_init.py -cwd ${PWD} -cmd ${CMD}
+	@${PYTHON3_CMD} ${RVX_INIT_HOME}/rvx_init.py -cwd ${PWD} -cmd ${CMD}
 
 ${RVX_INIT_CMD_LIST}:
 	@make rvx_init CMD=$@
