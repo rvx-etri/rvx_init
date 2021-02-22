@@ -13,10 +13,12 @@ ifndef PYTHON3_CMD
 	PYTHON3_CMD=${PYTHON3_CMD_CANDIDATE}
 endif
 
-ifeq ($(OS),Windows_NT)
-	PIP3_CMD=${PYTHON3_CMD} -m pip
-else
-	PIP3_CMD=sudo ${PYTHON3_CMD} -m pip
+ifndef PIP3_CMD
+	ifeq ($(OS),Windows_NT)
+		PIP3_CMD=${PYTHON3_CMD} -m pip
+	else
+		PIP3_CMD=sudo ${PYTHON3_CMD} -m pip
+	endif
 endif
 
 ifndef RVX_INIT_HOME
@@ -42,9 +44,14 @@ python_ubuntu:
 config_python:
 	@echo PYTHON3_CMD=${PYTHON3_CMD_CANDIDATE}>${PYTHON_CONFIG_FILE}
 
+reconfig_python:
+	@echo PYTHON3_CMD=${PYTHON3_CMD}>${PYTHON_CONFIG_FILE}
+	@echo PIP3_CMD=${PIP3_CMD}>>${PYTHON_CONFIG_FILE}
+
 check_python:
-	@echo ${PYTHON3_CMD}
-	@${PYTHON3_CMD} --version	
+	@echo PYTHON3_CMD=${PYTHON3_CMD}
+	@echo PIP3_CMD=${PIP3_CMD}
+	@${PYTHON3_CMD} --version
 
 pip3:
 	${PIP3_CMD} install --upgrade pip
