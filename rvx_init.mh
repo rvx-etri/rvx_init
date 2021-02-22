@@ -2,11 +2,9 @@ PYTHON3_VERSION_TO_INSTALL=3.6.0
 PYTHON_CONFIG_FILE=./rvx_python_config.mh
 
 ifeq ($(OS),Windows_NT)
-	PYTHON3_CMD_CANDIDATE=${shell where python3}
-	PIP3_CMD_CANDIDATE=${shell where pip3}
+	PYTHON3_CMD_CANDIDATE=${shell where python3} ${shell where python}
 else
-	PYTHON3_CMD_CANDIDATE=${shell which python3}
-	PIP3_CMD_CANDIDATE=${shell which pip3}
+	PYTHON3_CMD_CANDIDATE=${shell which -a python3}
 endif
 
 -include ${PYTHON_CONFIG_FILE}
@@ -14,8 +12,11 @@ endif
 ifndef PYTHON3_CMD
 	PYTHON3_CMD=${PYTHON3_CMD_CANDIDATE}
 endif
-ifndef PIP3_CMD
-	PIP3_CMD=${PIP3_CMD_CANDIDATE}
+
+ifeq ($(OS),Windows_NT)
+	PIP3_CMD=${PYTHON3_CMD} -m pip
+else
+	PIP3_CMD=sudo ${PYTHON3_CMD} -m pip
 endif
 
 ifndef RVX_INIT_HOME
@@ -40,12 +41,15 @@ python_ubuntu:
 
 config_python:
 	@echo PYTHON3_CMD=${PYTHON3_CMD_CANDIDATE}>${PYTHON_CONFIG_FILE}
-	@echo PIP3_CMD=${PIP3_CMD_CANDIDATE}>>${PYTHON_CONFIG_FILE}
+
+check_python:
+	@echo ${PYTHON3_CMD}
+	@${PYTHON3_CMD} --version	
 
 pip3:
-	sudo ${PIP3_CMD} install --upgrade pip
-	sudo ${PIP3_CMD} install distro numpy cryptography paramiko pyelftools
-	sudo ${PIP3_CMD} install --upgrade distro numpy cryptography paramiko pyelftools
+	${PIP3_CMD} install --upgrade pip
+	${PIP3_CMD} install distro numpy cryptography paramiko pyelftools
+	${PIP3_CMD} install --upgrade distro numpy cryptography paramiko pyelftools
 
 rvx_init_git:
 	@if ! [ -d ./rvx_init ] ;	\
