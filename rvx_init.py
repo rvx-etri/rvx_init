@@ -195,6 +195,11 @@ if __name__ == '__main__':
         execute_shell_cmd('git config --global user.name \"Kyuseung Han\"', cwd=cwd)
         execute_shell_cmd('git config --global user.email han@etir.re.kr', cwd=cwd)
 
+        execute_shell_cmd('git config --global color.branch auto', cwd=cwd)
+        execute_shell_cmd('git config --global color.diff auto', cwd=cwd)
+        execute_shell_cmd('git config --global color.interactive auto', cwd=cwd)
+        execute_shell_cmd('git config --global color.status auto', cwd=cwd)
+
       elif target=='date':
         execute_shell_cmd('sudo rdate -s time.bora.net', cwd=cwd)
 
