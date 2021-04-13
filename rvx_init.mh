@@ -25,21 +25,28 @@ ifndef RVX_INIT_HOME
 RVX_INIT_HOME=./rvx_init
 endif
 
-python_centos:
+python_centos_manual:
 	#sudo yum install python2
 	sudo yum install zlib zlib-devel openssl openssl-devel
 	wget https://www.python.org/ftp/python/${PYTHON3_VERSION_TO_INSTALL}/Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
 	tar xvf Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
 	cd ./Python-${PYTHON3_VERSION_TO_INSTALL}; ./configure; make; sudo make install
 
+python_centos:
+	sudo yum install python3
+	sudo yum install python3-pip
+	-sudo yum install python3-tk
+	sudo yum upgrade python3
+	sudo yum upgrade python3-pip
+	-sudo yum upgrade python3-tk
+
 python_ubuntu:
-	#sudo apt-get install python2
 	sudo apt-get install python3
 	sudo apt-get install python3-pip
-	sudo apt-get install python3-tk
+	-sudo apt-get install python3-tk
 	sudo apt-get upgrade python3
 	sudo apt-get upgrade python3-pip
-	sudo apt-get upgrade python3-tk
+	-sudo apt-get upgrade python3-tk
 
 config_python:
 	@echo PYTHON3_CMD=${PYTHON3_CMD_CANDIDATE}>${PYTHON_CONFIG_FILE}
@@ -52,6 +59,7 @@ check_python:
 	@echo PYTHON3_CMD=${PYTHON3_CMD}
 	@echo PIP3_CMD=${PIP3_CMD}
 	@${PYTHON3_CMD} --version
+	@${PIP3_CMD} --version
 
 pip3:
 	${PIP3_CMD} install --upgrade pip
