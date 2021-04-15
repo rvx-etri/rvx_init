@@ -1,5 +1,7 @@
 PYTHON3_VERSION_TO_INSTALL=3.6.0
+ifndef PYTHON_CONFIG_FILE
 PYTHON_CONFIG_FILE=./rvx_python_config.mh
+endif
 
 ifeq ($(OS),Windows_NT)
 	PYTHON3_CMD_CANDIDATE=${shell where python3} ${shell where python}
