@@ -65,8 +65,8 @@ check_python:
 
 pip3:
 	${PIP3_CMD} install --upgrade pip
-	${PIP3_CMD} install distro numpy cryptography paramiko pyelftools
-	${PIP3_CMD} install --upgrade distro numpy cryptography paramiko pyelftools
+	${PIP3_CMD} install distro numpy cryptography paramiko pyelftools configparser
+	${PIP3_CMD} install --upgrade distro numpy cryptography paramiko pyelftools configparser
 
 rvx_init_git:
 	@if ! [ -d ./rvx_init ] ;	\
@@ -79,5 +79,9 @@ update_rvx_init:
 	then \
 		cp ${RVX_INIT_HOME}/rvx_init.mh ./rvx_init.mh ; \
 	fi
+
+submodule:
+	git submodule init
+	git submodule update --force
 
 -include ${RVX_INIT_HOME}/rvx_init_extended.mh
