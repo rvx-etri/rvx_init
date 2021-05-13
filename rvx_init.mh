@@ -65,8 +65,8 @@ check_python:
 
 pip3:
 	${PIP3_CMD} install --upgrade pip
-	${PIP3_CMD} install distro numpy cryptography paramiko pyelftools configparser
-	${PIP3_CMD} install --upgrade distro numpy cryptography paramiko pyelftools configparser
+	${PIP3_CMD} install distro numpy cryptography pyelftools configparser
+	${PIP3_CMD} install --upgrade distro numpy cryptography pyelftools configparser
 
 rvx_init_git:
 	@if ! [ -d ./rvx_init ] ;	\
