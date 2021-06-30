@@ -82,16 +82,7 @@ class GitRepo():
       if candidate_list:
         self.git_name = candidate_list[0]
       if self.path.name!=self.git_name:
-        while 1:
-          print('Mismatch between directory name and remote repository!')
-          answer = input('Do you want to extract git name from directory name? (yes/no):')
-          if not answer:
-            break
-          elif answer=='no':
-            break
-          elif answer=='yes':
-            self.git_name = self.path.name
-            break          
+        print(f'Mismatch between directory name and remote repository! {self.path}')
     else:
       self.git_name = None
   
