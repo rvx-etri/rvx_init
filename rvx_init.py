@@ -107,6 +107,7 @@ class GitRepo():
     if self.path.is_dir():
       git_info_dir = self.path / '.git'
       if git_info_dir.exists():
+        print(f'{self.path} will be updated')
         execute_shell_cmd('git pull origin master', cwd=self.path)
       
   def __set_repo(self, is_ssh_access:bool):
