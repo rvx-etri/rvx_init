@@ -4,9 +4,9 @@ PYTHON_CONFIG_FILE=./rvx_python_config.mh
 endif
 
 ifeq ($(OS),Windows_NT)
-	PYTHON3_CMD_CANDIDATE_LIST=${shell where python3} ${shell where python}
+	PYTHON3_CMD_CANDIDATE_LIST=${shell where python3*} ${shell where python}
 else
-	PYTHON3_CMD_CANDIDATE_LIST=${shell which -a python3}
+	PYTHON3_CMD_CANDIDATE_LIST=${shell which -a python3*}
 endif
 
 -include ${PYTHON_CONFIG_FILE}
