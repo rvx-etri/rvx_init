@@ -16,11 +16,8 @@ ifndef PYTHON3_CMD
 endif
 
 ifndef PIP3_CMD_MANUAL
-	ifeq ($(OS),Windows_NT)
-		PIP3_CMD=${PYTHON3_CMD} -m pip
-	else
-		PIP3_CMD=sudo ${PYTHON3_CMD} -m pip
-	endif
+  #ifeq ($(OS),Windows_NT)
+	PIP3_CMD=${PYTHON3_CMD} -m pip
 else
 	PIP3_CMD=${PIP3_CMD_MANUAL}
 endif
