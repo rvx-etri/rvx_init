@@ -35,14 +35,18 @@ python_centos_manual:
 
 python_centos:
 	sudo yum install python3
+	-sudo yum install python3-pip
 	-sudo yum install python3-tk
 	sudo yum upgrade python3
+	-sudo yum upgrade python3-pip
 	-sudo yum upgrade python3-tk
 
 python_ubuntu:
 	sudo apt-get install python3
+	-sudo apt-get install python3-pip
 	-sudo apt-get install python3-tk
 	sudo apt-get upgrade python3
+	-sudo apt-get upgrade python3-pip
 	-sudo apt-get upgrade python3-tk
 
 config_python:
@@ -61,6 +65,7 @@ ifdef PIP3_CMD_MANUAL
 endif
 
 check_python:
+	@echo "// You MUST use the version between 3.8 and 3.10. //"
 	@echo PYTHON3_CMD=${PYTHON3_CMD}
 	@${PYTHON3_CMD} --version
 
@@ -78,6 +83,9 @@ install_python_package:
 	-${PIP3_CMD} install --upgrade pip
 	${PIP3_CMD} install distro numpy cryptography pyelftools configparser
 	${PIP3_CMD} install --upgrade distro numpy cryptography pyelftools configparser
+
+install_python_package_dev:
+	${PIP3_CMD} install networkx Pillow
 
 pip3: install_pip install_python_package
 
