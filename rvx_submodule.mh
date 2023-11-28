@@ -1,0 +1,49 @@
+###########
+# PRIVATE #
+###########
+
+init_rvx_submodule_private: init_rvx_submodule_private_check $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
+
+init_rvx_submodule_private_check:
+ifndef RVX_SUBMODULE_PRIVATE_LIST
+$(error define RVX_SUBMODULE_PRIVATE_LIST)
+endif
+                                                                                                                                     
+$(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):init_rvx_submodule_private.%:
+	rm -rf ./$(*)
+	-git submodule deinit -f $(*)
+	-rm -rf .git/modules/$(*)
+	-git rm -rf ./$(*)
+	git submodule add -f git@bitbucket.org:kyuseung_han/$(*).git
+	cd ./$(*) && git pull origin master
+
+#########
+# HWLIB #
+#########
+
+init_rvx_hwlib_basic:
+	rm -rf ./hwlib_basic
+	-git submodule deinit -f hwlib_basic
+	-rm -rf .git/modules/rvx_hwlib
+	-git rm -rf ./hwlib_basic
+	git submodule add -f git@bitbucket.org:kyuseung_han/rvx_hwlib.git ./hwlib_basic
+	cd ./hwlib_basic && git pull origin master
+
+##########
+# PUBLIC #
+##########
+
+init_rvx_submodule_public: init_rvx_submodule_public_check $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PRIVATE_LIST))
+
+init_rvx_submodule_public_check:
+ifndef RVX_SUBMODULE_PUBLIC_LIST
+$(error define RVX_SUBMODULE_PUBLIC_LIST)
+endif
+                                                                                                                                     
+$(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):init_rvx_submodule_public.%:
+	rm -rf ./$(*)
+	-git submodule deinit -f $(*)
+	-rm -rf .git/modules/$(*)
+	-git rm -rf ./$(*)
+	git submodule add -f https://bitbucket.org/kyuseung_han/$(*).git
+	cd ./$(*) && git pull origin master

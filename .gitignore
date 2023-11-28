@@ -1,3 +1,5 @@
 *~
 *.swp
 bitbucket_*mh
+Python*
+rvx_python_config.mh
