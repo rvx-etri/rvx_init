@@ -2,12 +2,7 @@
 # PRIVATE #
 ###########
 
-init_rvx_submodule_private: init_rvx_submodule_private_check $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
-
-init_rvx_submodule_private_check:
-ifndef RVX_SUBMODULE_PRIVATE_LIST
-$(error define RVX_SUBMODULE_PRIVATE_LIST)
-endif
+init_rvx_submodule_private: $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
                                                                                                                                      
 $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):init_rvx_submodule_private.%:
 	rm -rf ./$(*)
@@ -33,12 +28,7 @@ init_rvx_hwlib_basic:
 # PUBLIC #
 ##########
 
-init_rvx_submodule_public: init_rvx_submodule_public_check $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PRIVATE_LIST))
-
-init_rvx_submodule_public_check:
-ifndef RVX_SUBMODULE_PUBLIC_LIST
-$(error define RVX_SUBMODULE_PUBLIC_LIST)
-endif
+init_rvx_submodule_public: $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PRIVATE_LIST))
                                                                                                                                      
 $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):init_rvx_submodule_public.%:
 	rm -rf ./$(*)
