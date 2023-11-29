@@ -16,7 +16,7 @@ ifndef PYTHON3_CMD
 endif
 
 ifndef PIP3_CMD_MANUAL
-  #ifeq ($(OS),Windows_NT)
+	#ifeq ($(OS),Windows_NT)
 	PIP3_CMD=${PYTHON3_CMD} -m pip
 else
 	PIP3_CMD=${PIP3_CMD_MANUAL}
@@ -29,6 +29,13 @@ endif
 python_centos_manual:
 	#sudo yum install python2
 	sudo yum install zlib zlib-devel openssl openssl-devel
+	make python_manual
+
+python_ubnutu_manual:
+	sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+	make python_manual
+
+python_manual:
 	wget https://www.python.org/ftp/python/${PYTHON3_VERSION_TO_INSTALL}/Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
 	tar xvf Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
 	cd ./Python-${PYTHON3_VERSION_TO_INSTALL}; ./configure; make; sudo make install
@@ -79,17 +86,28 @@ check_pip:
 
 fix_pip: install_pip
 
-install_python_package:
+USER_PIP_LIST=distro numpy cryptography pyelftools configparser
+
+install_python_package_private:
 	-${PIP3_CMD} install --upgrade pip
-	${PIP3_CMD} install distro numpy cryptography pyelftools configparser
-	${PIP3_CMD} install --upgrade distro numpy cryptography pyelftools configparser
+	${PIP3_CMD} install ${USER_PIP_LIST}
+	${PIP3_CMD} install --upgrade ${USER_PIP_LIST}
+
+install_python_package_public:
+	-${PIP3_CMD} install --upgrade pip
+	-${PIP3_CMD} uninstall ${USER_PIP_LIST}
+	sudo ${PIP3_CMD} install ${USER_PIP_LIST}
+	sudo ${PIP3_CMD} install --upgrade ${USER_PIP_LIST}
 
 install_python_package_dev:
-	${PIP3_CMD} install networkx Pillow
+	${PIP3_CMD} install networkx Pillow pyinstaller
 
-pip3: install_pip install_python_package
+pip3: install_pip install_python_package_private
 
 pip: pip3
+
+pip_list:
+	@${PIP3_CMD} list -v
 
 rvx_init_git:
 	@if ! [ -d ./rvx_init ] ;	\
