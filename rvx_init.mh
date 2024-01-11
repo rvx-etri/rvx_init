@@ -28,7 +28,7 @@ endif
 
 python_centos_manual:
 	#sudo yum install python2
-	sudo yum install zlib zlib-devel openssl openssl-devel
+	sudo yum install zlib zlib-devel openssl openssl-devel bzip2-devel
 	make python_manual
 
 python_ubnutu_manual:
@@ -44,17 +44,21 @@ python_centos:
 	sudo yum install python3
 	-sudo yum install python3-pip
 	-sudo yum install python3-tk
+	-sudo yum install python3-tkinter
 	sudo yum upgrade python3
 	-sudo yum upgrade python3-pip
 	-sudo yum upgrade python3-tk
+	-sudo yum upgrade python3-tkinter
 
 python_ubuntu:
 	sudo apt-get install python3
 	-sudo apt-get install python3-pip
 	-sudo apt-get install python3-tk
+	-sudo apt-get install python3-tkinter
 	sudo apt-get upgrade python3
 	-sudo apt-get upgrade python3-pip
 	-sudo apt-get upgrade python3-tk
+	-sudo apt-get upgrade python3-tkinter
 
 config_python:
 ifeq ($(OS),Windows_NT)
@@ -88,23 +92,24 @@ fix_pip: install_pip
 
 USER_PIP_LIST=distro numpy cryptography pyelftools configparser
 
-install_python_package_private:
+pip_private:
 	-${PIP3_CMD} install --upgrade pip
 	${PIP3_CMD} install ${USER_PIP_LIST}
 	${PIP3_CMD} install --upgrade ${USER_PIP_LIST}
 
-install_python_package_public:
-	-${PIP3_CMD} install --upgrade pip
+pip_public:
+	-sudo ${PIP3_CMD} install --upgrade pip
 	-${PIP3_CMD} uninstall ${USER_PIP_LIST}
 	sudo ${PIP3_CMD} install ${USER_PIP_LIST}
 	sudo ${PIP3_CMD} install --upgrade ${USER_PIP_LIST}
 
-install_python_package_dev:
-	${PIP3_CMD} install networkx Pillow pyinstaller
+pip_dev:
+	${PIP3_CMD} install networkx Pillow openpyxl tk
+	sudo ${PIP3_CMD} install tinyaes pyinstaller==5.13.2
 
-pip3: install_pip install_python_package_private
+pip: install_pip pip_private
 
-pip: pip3
+pip3: pip
 
 pip_list:
 	@${PIP3_CMD} list -v
@@ -114,6 +119,7 @@ rvx_init_git:
 	then \
 		git clone https://bitbucket.org/kyuseung_han/rvx_init.git ; \
 	fi
+  git submodule add -f https://bitbucket.org/kyuseung_han/rvx_init.git
 
 update_rvx_init:
 	@if [ -f ${RVX_INIT_HOME}/rvx_init.mh ] ;	\
