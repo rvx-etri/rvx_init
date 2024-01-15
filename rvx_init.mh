@@ -119,7 +119,7 @@ rvx_init_git:
 	then \
 		git clone https://bitbucket.org/kyuseung_han/rvx_init.git ; \
 	fi
-  git submodule add -f https://bitbucket.org/kyuseung_han/rvx_init.git
+	git submodule add -f https://bitbucket.org/kyuseung_han/rvx_init.git
 
 update_rvx_init:
 	@if [ -f ${RVX_INIT_HOME}/rvx_init.mh ] ;	\
