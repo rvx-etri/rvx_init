@@ -31,7 +31,7 @@ python_centos_manual:
 	sudo yum install zlib zlib-devel openssl openssl-devel bzip2-devel
 	make python_manual
 
-python_ubnutu_manual:
+python_ubuntu_manual:
 	sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
 	make python_manual
 
