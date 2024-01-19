@@ -136,7 +136,7 @@ submodule:
 	git submodule init
 	git submodule update --force
 
-check:
+check_rvx_init:
 	@echo ${RVX_INIT_HOME}
 	@echo ${PYTHON_CONFIG_FILE}
 
