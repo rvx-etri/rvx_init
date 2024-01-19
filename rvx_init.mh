@@ -1,6 +1,7 @@
 PYTHON3_VERSION_TO_INSTALL=3.8.16
+#PYTHON3_VERSION_TO_INSTALL=3.9.18
 ifndef PYTHON_CONFIG_FILE
-PYTHON_CONFIG_FILE=./rvx_python_config.mh
+PYTHON_CONFIG_FILE=${CURDIR}/rvx_python_config.mh
 endif
 
 ifeq ($(OS),Windows_NT)
@@ -23,12 +24,12 @@ else
 endif
 
 ifndef RVX_INIT_HOME
-RVX_INIT_HOME=./rvx_init
+RVX_INIT_HOME=${CURDIR}/rvx_init
 endif
 
 python_centos_manual:
 	#sudo yum install python2
-	sudo yum install zlib zlib-devel openssl openssl-devel bzip2-devel
+	sudo yum install zlib zlib-devel openssl openssl-devel bzip2-devel libffi-devel
 	make python_manual
 
 python_ubuntu_manual:
@@ -36,9 +37,13 @@ python_ubuntu_manual:
 	make python_manual
 
 python_manual:
-	wget https://www.python.org/ftp/python/${PYTHON3_VERSION_TO_INSTALL}/Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
+	if ! [ -f Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz ] ;	\
+	then \
+		wget https://www.python.org/ftp/python/${PYTHON3_VERSION_TO_INSTALL}/Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz; \
+	fi
+	sudo rm -rf ./Python-${PYTHON3_VERSION_TO_INSTALL}
 	tar xvf Python-${PYTHON3_VERSION_TO_INSTALL}.tar.xz
-	cd ./Python-${PYTHON3_VERSION_TO_INSTALL}; ./configure; make; sudo make install
+	cd ./Python-${PYTHON3_VERSION_TO_INSTALL}; ./configure --enable-shared; make; sudo make install
 
 python_centos:
 	sudo yum install python3
@@ -77,6 +82,7 @@ endif
 
 check_python:
 	@echo "// You MUST use the version between 3.8 and 3.10. //"
+	@echo from ${PYTHON_CONFIG_FILE}
 	@echo PYTHON3_CMD=${PYTHON3_CMD}
 	@${PYTHON3_CMD} --version
 
@@ -90,7 +96,7 @@ check_pip:
 
 fix_pip: install_pip
 
-USER_PIP_LIST=distro numpy cryptography pyelftools configparser
+USER_PIP_LIST=distro numpy cryptography pyelftools configparser Pillow
 
 pip_private:
 	-${PIP3_CMD} install --upgrade pip
@@ -104,8 +110,7 @@ pip_public:
 	sudo ${PIP3_CMD} install --upgrade ${USER_PIP_LIST}
 
 pip_dev:
-	${PIP3_CMD} install networkx Pillow openpyxl tk
-	sudo ${PIP3_CMD} install tinyaes pyinstaller==5.13.2
+	${PIP3_CMD} install networkx openpyxl tk
 
 pip: install_pip pip_private
 
@@ -130,5 +135,9 @@ update_rvx_init:
 submodule:
 	git submodule init
 	git submodule update --force
+
+check:
+	@echo ${RVX_INIT_HOME}
+	@echo ${PYTHON_CONFIG_FILE}
 
 -include ${RVX_INIT_HOME}/rvx_init_extended.mh
