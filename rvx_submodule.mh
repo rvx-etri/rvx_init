@@ -12,10 +12,7 @@ $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):init_rvx
 	git submodule add -f git@bitbucket.org:kyuseung_han/$(*).git
 	cd ./$(*) && git pull origin master
 
-update_rvx_submodule_private: $(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
-                                                                                                                                     
-$(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):update_rvx_submodule_private.%:
-	cd ./$(*) && git pull origin master
+update_rvx_submodule_private: update_rvx_submodule
 
 #########
 # HWLIB #
@@ -43,12 +40,20 @@ $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):init_rvx_s
 	git submodule add -f https://bitbucket.org/kyuseung_han/$(*).git
 	cd ./$(*) && git pull origin master
 
-update_rvx_submodule_public: $(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PRIVATE_LIST))
+update_rvx_submodule_public: update_rvx_submodule
+
+##########
+# UPDATE #
+##########
+
+update_rvx_submodule: $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST))
                                                                                                                                      
-$(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):update_rvx_submodule_public.%:
-	rm -rf ./$(*)
-	-git submodule deupdate -f $(*)
-	-rm -rf .git/modules/$(*)
-	-git rm -rf ./$(*)
-	git submodule add -f https://bitbucket.org/kyuseung_han/$(*).git
+$(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST)):update_rvx_submodule.%:
+	cd ./$(*) && rm -rf *
+	cd ./$(*) && git checkout *
 	cd ./$(*) && git pull origin master
+
+update_rvx_hwlib_basic:
+	cd ./hwlib_basic && rm -rf *
+  cd ./hwlib_basic && git checkout *
+	cd ./hwlib_basic && git pull origin master
