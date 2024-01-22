@@ -55,5 +55,5 @@ $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST)):update_rvx_sub
 
 update_rvx_hwlib_basic:
 	cd ./hwlib_basic && rm -rf *
-  cd ./hwlib_basic && git checkout *
+	cd ./hwlib_basic && git checkout *
 	cd ./hwlib_basic && git pull origin master
