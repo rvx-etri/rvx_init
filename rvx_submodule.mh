@@ -56,6 +56,11 @@ $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PUBLIC_LIST)):update_rvx_subm
 # UPDATE #
 ##########
 
+update_rvx_init:
+	cd ./rvx_init && rm -rf *
+	cd ./rvx_init && git checkout *
+	cd ./rvx_init && git pull origin master
+
 update_rvx_hwlib_basic:
 	cd ./hwlib_basic && rm -rf *
 	cd ./hwlib_basic && git checkout *
