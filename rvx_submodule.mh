@@ -10,14 +10,14 @@ $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):init_rvx
 	-rm -rf .git/modules/$(*)
 	-git rm -rf ./$(*)
 	git submodule add -f git@bitbucket.org:kyuseung_han/$(*).git
-	cd ./$(*) && git pull origin master
+	cd ./$(*) && git pull origin master && git lfs pull
 
 update_rvx_submodule_private: $(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
                                                                                                                                      
 $(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):update_rvx_submodule_private.%:
 	cd ./$(*) && rm -rf *
 	cd ./$(*) && git checkout *
-	cd ./$(*) && git pull origin master
+	cd ./$(*) && git pull origin master && git lfs pull
 
 #########
 # HWLIB #
@@ -29,7 +29,7 @@ init_rvx_hwlib_basic:
 	-rm -rf .git/modules/rvx_hwlib
 	-git rm -rf ./hwlib_basic
 	git submodule add -f git@bitbucket.org:kyuseung_han/rvx_hwlib.git ./hwlib_basic
-	cd ./hwlib_basic && git pull origin master
+	cd ./hwlib_basic && git pull origin master && git lfs pull
 
 ##########
 # PUBLIC #
@@ -43,7 +43,7 @@ $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):init_rvx_s
 	-rm -rf .git/modules/$(*)
 	-git rm -rf ./$(*)
 	git submodule add -f https://bitbucket.org/kyuseung_han/$(*).git
-	cd ./$(*) && git pull origin master
+	cd ./$(*) && git pull origin master && git lfs pull
 
 update_rvx_submodule_public: $(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST))
                                                                                                                                      
@@ -59,4 +59,4 @@ $(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):update_r
 update_rvx_hwlib_basic:
 	cd ./hwlib_basic && rm -rf *
 	cd ./hwlib_basic && git checkout *
-	cd ./hwlib_basic && git pull origin master
+	cd ./hwlib_basic && git pull origin master && git lfs pull
