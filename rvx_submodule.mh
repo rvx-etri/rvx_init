@@ -1,4 +1,21 @@
 ###########
+# COMMON ##
+###########
+
+$(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST))::update_rvx_submodule.%:
+	cd ./$(*) && rm -rf *
+	cd ./$(*) && git checkout *
+	cd ./$(*) && git pull origin master
+
+update_rvx_submodule.rvx_synthesizer_obfuscated::
+	cd ./$(*) && git lfs pull
+
+error_rvx_init:
+	$(error "rvx_init is NOT allowed in RVX_SUBMODULE_PRIVATE_LIST or RVX_SUBMODULE_PUBLIC_LIST")
+  
+update_rvx_submodule.rvx_init:: error_rvx_init
+
+###########
 # PRIVATE #
 ###########
 
@@ -10,14 +27,11 @@ $(addprefix init_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):init_rvx
 	-rm -rf .git/modules/$(*)
 	-git rm -rf ./$(*)
 	git submodule add -f git@bitbucket.org:kyuseung_han/$(*).git
-	cd ./$(*) && git pull origin master && git lfs pull
+	cd ./$(*) && git pull origin master
 
-update_rvx_submodule_private: $(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST))
-                                                                                                                                     
-$(addprefix update_rvx_submodule_private., $(RVX_SUBMODULE_PRIVATE_LIST)):update_rvx_submodule_private.%:
-	cd ./$(*) && rm -rf *
-	cd ./$(*) && git checkout *
-	cd ./$(*) && git pull origin master && git lfs pull
+update_rvx_submodule_private: $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST))
+
+init_rvx_submodule_private.rvx_init: error_rvx_init
 
 #########
 # HWLIB #
@@ -29,7 +43,7 @@ init_rvx_hwlib_basic:
 	-rm -rf .git/modules/rvx_hwlib
 	-git rm -rf ./hwlib_basic
 	git submodule add -f git@bitbucket.org:kyuseung_han/rvx_hwlib.git ./hwlib_basic
-	cd ./hwlib_basic && git pull origin master && git lfs pull
+	cd ./hwlib_basic && git pull origin master
 
 ##########
 # PUBLIC #
@@ -43,14 +57,11 @@ $(addprefix init_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):init_rvx_s
 	-rm -rf .git/modules/$(*)
 	-git rm -rf ./$(*)
 	git submodule add -f https://bitbucket.org/kyuseung_han/$(*).git
-	cd ./$(*) && git pull origin master && git lfs pull
-
-update_rvx_submodule_public: $(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST))
-                                                                                                                                     
-$(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):update_rvx_submodule_public.%:
-	cd ./$(*) && rm -rf *
-	cd ./$(*) && git checkout *
 	cd ./$(*) && git pull origin master
+
+update_rvx_submodule_public: $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PUBLIC_LIST))
+
+init_rvx_submodule_public.rvx_init: error_rvx_init
 
 ##########
 # UPDATE #
@@ -59,4 +70,4 @@ $(addprefix update_rvx_submodule_public., $(RVX_SUBMODULE_PUBLIC_LIST)):update_r
 update_rvx_hwlib_basic:
 	cd ./hwlib_basic && rm -rf *
 	cd ./hwlib_basic && git checkout *
-	cd ./hwlib_basic && git pull origin master && git lfs pull
+	cd ./hwlib_basic && git pull origin master

@@ -109,6 +109,7 @@ class GitRepo():
       if git_info_dir.exists():
         print(f'{self.path} will be updated')
         execute_shell_cmd('git pull origin master', cwd=self.path)
+        execute_shell_cmd('git lfs pull', cwd=self.path)
       
   def __set_repo(self, is_ssh_access:bool):
     if self.path.is_dir():

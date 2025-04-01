@@ -138,6 +138,9 @@ submodule:
 	git submodule init
 	git submodule update --force
 
+submodule_lfs: submodule
+	git submodule foreach --recursive git lfs pull
+
 check_rvx_init:
 	@echo ${RVX_INIT_HOME}
 	@echo ${PYTHON_CONFIG_FILE}
