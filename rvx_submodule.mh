@@ -8,7 +8,7 @@ $(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST))::update_rvx_su
 	cd ./$(*) && git pull origin master
 
 update_rvx_submodule.rvx_synthesizer_obfuscated::
-	cd ./$(*) && git lfs pull
+	cd ./rvx_synthesizer_obfuscated && git lfs pull
 
 error_rvx_init:
 	$(error "rvx_init is NOT allowed in RVX_SUBMODULE_PRIVATE_LIST or RVX_SUBMODULE_PUBLIC_LIST")
