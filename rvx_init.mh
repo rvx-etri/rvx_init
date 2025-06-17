@@ -127,10 +127,10 @@ pip_list:
 	@${PIP3_CMD} list -v
 
 rvx_init_git:
-	@if ! [ -d ./rvx_init ] ;	\
-	then \
-		git clone https://bitbucket.org/kyuseung_han/rvx_init.git ; \
-	fi
+	-git submodule deinit -f rvx_init
+	-rm -rf .git/modules/rvx_init
+	-git rm -rf ./rvx_init
+	-rm -rf ./rvx_init
 	git submodule add -f https://bitbucket.org/kyuseung_han/rvx_init.git
 
 update_rvx_init:

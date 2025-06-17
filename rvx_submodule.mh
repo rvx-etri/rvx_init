@@ -71,3 +71,13 @@ update_rvx_hwlib_basic:
 	cd ./hwlib_basic && rm -rf *
 	cd ./hwlib_basic && git checkout *
 	cd ./hwlib_basic && git pull origin master
+
+##########
+# RETIRE #
+##########
+
+retire_rvx_submodule:
+	-@git submodule deinit -f $(RVX_SUBMODULE)
+	-@rm -rf .git/modules/$(RVX_SUBMODULE)
+	-@git rm -rf ./$(RVX_SUBMODULE)
+	-@rm -rf ./$(RVX_SUBMODULE)
