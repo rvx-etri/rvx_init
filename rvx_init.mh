@@ -103,7 +103,7 @@ check_pip:
 
 fix_pip: install_pip
 
-USER_PIP_LIST=setuptools distro numpy cryptography pyelftools configparser Pillow
+USER_PIP_LIST=setuptools distro "numpy<2.0" cryptography pyelftools configparser Pillow
 
 pip_private:
 	-${PIP3_CMD} install --upgrade pip
