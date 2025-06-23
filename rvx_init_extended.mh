@@ -19,4 +19,21 @@ ${RVX_GIT_LIST}:%: %.install
 update_rvx_git:
 	@make rvx_init CMD=update
 
+REPAIR_TARGET_DIR?=${CURDIR}
+REPAIR_TARGET_DIR_ABS:=$(abspath ${REPAIR_TARGET_DIR})
+REPO_NAME:= $(notdir ${REPAIR_TARGET_DIR_ABS})
+REPO_URL:=$(shell cd ${REPAIR_TARGET_DIR_ABS} && git config --get remote.origin.url)
+PURE_REPO_DIR:=$(abspath ${REPAIR_TARGET_DIR_ABS}/../${REPO_NAME}_pure)
+
+repair_repo:
+	@echo ${REPO_URL}
+	@if [ ! -d ${PURE_REPO_DIR} ]; \
+	then \
+		git clone ${REPO_URL} ${PURE_REPO_DIR}; \
+	fi
+	cd ${PURE_REPO_DIR} && git submodule init
+	cd ${PURE_REPO_DIR} && git submodule update --force
+	cd ${REPAIR_TARGET_DIR_ABS} && rm -rf .git
+	cd ${REPAIR_TARGET_DIR_ABS} && cp -r ${PURE_REPO_DIR}/.git .
+
 .PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} ${RVX_GIT_LIST} update_rvx_git

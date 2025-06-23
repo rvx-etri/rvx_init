@@ -2,7 +2,7 @@
 # COMMON ##
 ###########
 
-$(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST))::update_rvx_submodule.%:
+$(addprefix update_rvx_submodule., $(RVX_SUBMODULE_PRIVATE_LIST) $(RVX_SUBMODULE_PUBLIC_LIST))::update_rvx_submodule.%:
 	cd ./$(*) && rm -rf *
 	cd ./$(*) && git checkout *
 	cd ./$(*) && git pull origin master
