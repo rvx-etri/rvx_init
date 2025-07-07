@@ -80,4 +80,5 @@ retire_rvx_submodule:
 	-@git submodule deinit -f $(RVX_SUBMODULE)
 	-@rm -rf .git/modules/$(RVX_SUBMODULE)
 	-@git rm -rf ./$(RVX_SUBMODULE)
+	-@git config -f .gitmodules --remove-section submodule.$(RVX_SUBMODULE)
 	-@rm -rf ./$(RVX_SUBMODULE)

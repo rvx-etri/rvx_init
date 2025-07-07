@@ -20,10 +20,10 @@ update_rvx_git:
 	@make rvx_init CMD=update
 
 REPAIR_TARGET_DIR?=${CURDIR}
-REPAIR_TARGET_DIR_ABS:=$(abspath ${REPAIR_TARGET_DIR})
+REPAIR_TARGET_DIR_ABS:=$(call absolute_path,${REPAIR_TARGET_DIR})
 REPO_NAME:= $(notdir ${REPAIR_TARGET_DIR_ABS})
 REPO_URL:=$(shell cd ${REPAIR_TARGET_DIR_ABS} && git config --get remote.origin.url)
-PURE_REPO_DIR:=$(abspath ${REPAIR_TARGET_DIR_ABS}/../${REPO_NAME}_pure)
+PURE_REPO_DIR:=$(call absolute_path,${REPAIR_TARGET_DIR_ABS}/../${REPO_NAME}_pure)
 
 repair_repo:
 	@echo ${REPO_URL}
