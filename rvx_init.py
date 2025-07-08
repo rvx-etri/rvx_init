@@ -39,9 +39,15 @@ def generate_url(host:str, is_ssh_access:bool, repo_name:str):
     assert 0, host
   return url
 
-def set_url_to_repo(url:str, path:Path):
-  assert path.is_dir(), path
-  execute_shell_cmd(f'git remote set-url origin {url}', cwd=path)
+def set_url_to_repo(repo_name:str, url:str, path:Path):
+  dotgit_path = path / '.git'
+  assert dotgit_path.exists(), path
+  if dotgit_path.is_dir():
+    execute_shell_cmd(f'git remote set-url origin {url}', cwd=path)
+  elif dotgit_path.is_file():
+    execute_shell_cmd(f'git config -f .gitmodules submodule.{repo_name}.url \"{url}\"', cwd=path)
+  else:
+    assert 0
 
 def clone_repo(url:str, parent_path:Path):
   execute_shell_cmd(f'git clone {url}', cwd=parent_path)
@@ -97,28 +103,28 @@ if __name__ == '__main__':
         url = generate_url('bitbucket', 0, target)
         repo_path = cwd / target
         if repo_path.is_dir():
-          set_url_to_repo(url, repo_path)
+          set_url_to_repo(target, url, repo_path)
         else:
           clone_repo(utl, cwd)
       elif action=='bitbucket_ssh':
         url = generate_url('bitbucket', 1, target)
         repo_path = cwd / target
         if repo_path.is_dir():
-          set_url_to_repo(url, repo_path)
+          set_url_to_repo(target, url, repo_path)
         else:
           clone_repo(utl, cwd)
       elif action=='github':
         url = generate_url('github', 0, target)
         repo_path = cwd / target
         if repo_path.is_dir():
-          set_url_to_repo(url, repo_path)
+          set_url_to_repo(target, url, repo_path)
         else:
           clone_repo(utl, cwd)
       elif action=='github_ssh':
         url = generate_url('github', 1, target)
         repo_path = cwd / target
         if repo_path.is_dir():
-          set_url_to_repo(url, repo_path)
+          set_url_to_repo(target, url, repo_path)
         else:
           clone_repo(utl, cwd)
       else:
