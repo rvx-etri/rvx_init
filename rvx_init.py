@@ -45,7 +45,7 @@ def set_url_to_repo(repo_name:str, url:str, path:Path):
   if dotgit_path.is_dir():
     execute_shell_cmd(f'git remote set-url origin {url}', cwd=path)
   elif dotgit_path.is_file():
-    execute_shell_cmd(f'git config -f .gitmodules submodule.{repo_name}.url \"{url}\"', cwd=path)
+    execute_shell_cmd(f'git config -f .gitmodules submodule.{repo_name}.url \"{url}\"', cwd=path.parent)
   else:
     assert 0
 
