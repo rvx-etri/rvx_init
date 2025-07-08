@@ -1,23 +1,16 @@
-ifndef CMD
-CMD = gui
-endif
-
-RVX_INIT_CMD_LIST=bitbucket git_config set_repo set_repo_sub change_repo update_script set_repo.ssh set_repo.https
-RVX_GIT_LIST=rvx_util rvx_dev_util rvx_tools rvx_ssw rvx_synthesizer_binary rvx_hwlib rvx_binary
+RVX_INIT_CMD_LIST=git_config update_rvx_repo
 
 rvx_init:
-	@${PYTHON3_CMD} ${RVX_INIT_HOME}/rvx_init.py -cwd ${PWD} -cmd ${CMD}
+	@${PYTHON3_CMD} ${RVX_INIT_HOME}/rvx_init.py -cwd ${CURDIR} -cmd ${CMD}
 
 ${RVX_INIT_CMD_LIST}:
 	@make rvx_init CMD=$@
 
-$(addsuffix .install, ${RVX_GIT_LIST}):%.install:
-	@make rvx_init CMD=$(*).install
-
-${RVX_GIT_LIST}:%: %.install
-
-update_rvx_git:
-	@make rvx_init CMD=update
+init_shared:
+	@make rvx_init CMD=rvx_util.bitbucket_ssh
+	@make rvx_init CMD=rvx_ssw.bitbucket_ssh
+	@make rvx_init CMD=rvx_binary.github
+	@make rvx_init CMD=rvx_synthesizer_obfuscated.github
 
 REPAIR_TARGET_DIR?=${CURDIR}
 REPAIR_TARGET_DIR_ABS:=$(call absolute_path,${REPAIR_TARGET_DIR})
@@ -36,4 +29,4 @@ repair_repo:
 	cd ${REPAIR_TARGET_DIR_ABS} && rm -rf .git
 	cd ${REPAIR_TARGET_DIR_ABS} && cp -r ${PURE_REPO_DIR}/.git .
 
-.PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} ${RVX_GIT_LIST} update_rvx_git
+.PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} update_rvx_git
