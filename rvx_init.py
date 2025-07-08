@@ -91,7 +91,6 @@ if __name__ == '__main__':
       execute_shell_cmd('sudo rdate -s time.bora.net', cwd=cwd)
 
     elif target.startswith('rvx_'):
-      assert target!='rvx_init'
       if 0:
         pass
       elif action=='bitbucket':
