@@ -6,17 +6,13 @@ rvx_init:
 ${RVX_INIT_CMD_LIST}:
 	@make rvx_init CMD=$@
 
-init_shared:
-	@make rvx_init CMD=rvx_util.bitbucket_ssh
-	@make rvx_init CMD=rvx_ssw.bitbucket_ssh
-	@make rvx_init CMD=rvx_binary.github
-	@make rvx_init CMD=rvx_synthesizer_obfuscated.github
+ifneq ($(OS),Windows_NT)
 
 REPAIR_TARGET_DIR?=${CURDIR}
-REPAIR_TARGET_DIR_ABS:=$(call absolute_path,${REPAIR_TARGET_DIR})
+REPAIR_TARGET_DIR_ABS:=$(abspath ${REPAIR_TARGET_DIR})
 REPO_NAME:= $(notdir ${REPAIR_TARGET_DIR_ABS})
 REPO_URL:=$(shell cd ${REPAIR_TARGET_DIR_ABS} && git config --get remote.origin.url)
-PURE_REPO_DIR:=$(call absolute_path,${REPAIR_TARGET_DIR_ABS}/../${REPO_NAME}_pure)
+PURE_REPO_DIR:=$(abspath ${REPAIR_TARGET_DIR_ABS}/../${REPO_NAME}_pure)
 
 repair_repo:
 	@echo ${REPO_URL}
@@ -28,5 +24,7 @@ repair_repo:
 	cd ${PURE_REPO_DIR} && git submodule update --force
 	cd ${REPAIR_TARGET_DIR_ABS} && rm -rf .git
 	cd ${REPAIR_TARGET_DIR_ABS} && cp -r ${PURE_REPO_DIR}/.git .
+
+endif
 
 .PHONY: rvx_init_git rvx_init update_rvx_init ${RVX_INIT_CMD_LIST} update_rvx_git
