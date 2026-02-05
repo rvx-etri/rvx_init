@@ -86,7 +86,7 @@ if __name__ == '__main__':
     elif target=='git_kshan':
       execute_shell_cmd('git config --global core.editor vim', cwd=cwd)
       execute_shell_cmd('git config --global user.name \"Kyuseung Han\"', cwd=cwd)
-      execute_shell_cmd('git config --global user.email han@etir.re.kr', cwd=cwd)
+      execute_shell_cmd('git config --global user.email han@etri.re.kr', cwd=cwd)
 
       execute_shell_cmd('git config --global color.branch auto', cwd=cwd)
       execute_shell_cmd('git config --global color.diff auto', cwd=cwd)
